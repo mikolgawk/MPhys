@@ -11,12 +11,14 @@ For citation, see https://www.materialsproject.org/citing
 
 from pymatgen.ext.matproj import MPRester
 from pymatgen.electronic_structure.plotter import BSPlotter
+from pymatgen.electronic_structure.bandstructure import BandStructure
+import json
 
 if __name__ == "__main__":
     MAPI_KEY = "bbiUJxPj5bmp31SqSsuc0EAcO3ekNw6f"  # You must change this to your Materials API key! (or set MAPI_KEY env variable)
     mpr = MPRester(MAPI_KEY)  # object for connecting to MP Rest interface
     
-    for id_ in range(1,5):    
+    for id_ in range(100,102):    
         mp_id = "mp-" + str(id_)  # You must change this to the mp-id of your compound of interest
         has_bs = False
         try:
@@ -29,6 +31,10 @@ if __name__ == "__main__":
             print(id_)
             filename = f'band_structure_{mp_id}'
             BSPlotter(bs).save_plot(filename)
+            
+            bs_dict = bs.as_dict()
+            with open("mp-"+str(id_)+".json", "w") as json_file:
+                json.dump(bs_dict, json_file)
               
         
         
