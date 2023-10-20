@@ -21,7 +21,7 @@ if __name__ == "__main__":
     mpr = MPRester(MAPI_KEY)  # object for connecting to MP Rest interface
     json_filename = f"bs.json"
     with open(json_filename, "w") as json_file:
-        for id_ in range(1,5):    
+        for id_ in range(10000,10010):    
             mp_id = "mp-" + str(id_)  # You must change this to the mp-id of your compound of interest
             has_bs = False
             try:
@@ -64,12 +64,19 @@ if __name__ == "__main__":
             except:
                 pass
             if has_bs:
-                print('Band gap info: {}'.format(bs.get_band_gap()))
-                print(id_)
-                filename = f'band_structure_{mp_id}'
-                #json_filename = f"{mp_id}_bs.json"
-                json.dump(D, json_file) 
-                json_file.write("\n")
+                try:
+                    print('Band gap info: {}'.format(bs.get_band_gap()))
+                    print(id_)
+                    filename = f'band_structure_{mp_id}'
+                    # BSPlotter(bs).save_plot(filename)
+                    # bs_dict = bs.as_dict()
+                    # with open("mp-"+str(id_)+".json", "w") as json_file:
+                    #     json.dump(bs_dict, json_file)
+                    #json_filename = f"{mp_id}_bs.json"
+                    json.dump(D, json_file) 
+                    json_file.write("\n")
+                except:
+                    pass
 
         
         
