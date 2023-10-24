@@ -33,6 +33,7 @@ numpy_traintarget = np.array(traintarget)
 
 # Now you can work with 'numpy_4d_array' as a NumPy array
 
+## Post-processing of the arrays
 train_examples = np.squeeze(numpy_trainset, axis=1)
 train_labels = np.squeeze(numpy_traintarget, axis=0)
 test_examples = np.squeeze(numpy_testset, axis=2).transpose(2,0,1)
