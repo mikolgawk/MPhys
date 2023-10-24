@@ -1,3 +1,6 @@
+## This file loads train set and test set from matlab and converts them to numpy arrays.
+## It then trains the data
+
 ## Import libraries
 import numpy as np
 import tensorflow as tf
