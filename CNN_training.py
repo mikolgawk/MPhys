@@ -12,49 +12,77 @@ batch_size = 3
 
 # Open the images
 start_index = 1 #inclusive
-end_index = 4 #inclusive
-images = []
-for x in range(start_index, end_index + 1):
+end_index = 446 #inclusive
 
-    input_image_directory = "C:/Users/Czaja/Desktop/MPhys thesis/Materials_project_picture_prep/venv/96x96 divided pictures/"
-    input_image_name = 'band_structure_mp-' + str(x) + '_segment_'
-    input_image_path = input_image_directory + input_image_name + '0.png'
+def load_images(start_index, end_index):
+    images = []
+    for x in range(start_index, end_index + 1):
 
-    segment_number = 0
-    if not os.path.isfile(input_image_path):
-        print("No such file %s" % input_image_path)
-        continue
+        input_image_directory = "C:/Users/Czaja/Desktop/MPhys thesis/Materials_project_picture_prep/venv/96x96 divided pictures/"
+        input_image_name = 'band_structure_mp-' + str(x) + '_segment_'
+        input_image_path = input_image_directory + input_image_name + '0.png'
 
-    while os.path.isfile(input_image_path):
-        image = Image.open(input_image_path)
+        segment_number = 0
+        if not os.path.isfile(input_image_path):
+            print("No such file %s" % input_image_path)
+            continue
 
-        # Convert the image to a NumPy array
-        image_array = np.array(image)
+        while os.path.isfile(input_image_path):
+            image = Image.open(input_image_path)
 
-        # Normalize the pixel values to the range [0, 1] (if needed)
-        image_array = image_array / 255.0
+            # Convert the image to a NumPy array
+            image_array = np.array(image)
 
-        images.append(image_array)
+            # Normalize the pixel values to the range [0, 1] (if needed)
+            image_array = image_array / 255.0
 
-        segment_number += 1
+            images.append(image_array)
 
-        input_image_path = input_image_directory + input_image_name + str(segment_number) + '.png'
+            segment_number += 1
+
+            input_image_path = input_image_directory + input_image_name + str(segment_number) + '.png'
 
 
-images = np.array(images) #train image data in the format [image_1_array, image_2_array, ....]
-pre_assigned_outcomes = np.array([0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0])
+    return images
 
+
+images_1_to_446 = load_images(start_index,end_index) #train image data in the format [image_1_array, image_2_array, ....]
+#pre_assigned_outcomes are all the images from 1 to 446 (included)
+pre_assigned_outcomes_1_to_446 = np.array([0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,1,0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,1,1,1,0,0,0,1,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0])
 number_of_possible_outcomes = 2 #Flat or not flat
-
+"""
+images_1000_to_1027 = load_images(1000,1027)
+images_1029_to_1037 = load_images(1029,1037)
+images_1039_to_1065 = load_images(1039,1065)
+images_1067_to_1077 = load_images(1067,1077)
+images_1078_to_1100 = load_images(1078,1100)
+images_1101_to_1146 = load_images(1101,1146)
+images_1101_to_1146 = load_images(1147,1194)
+"""
+images_1000_to_1194 = load_images(1000,1194)
+images = images_1_to_446 + images_1000_to_1194
+images = np.array(images)
+#pre_assigned_outcomes_1000_to_1200 = np.array([0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,1,1,1,0,1,0,0,0,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,1,0,1,1,1,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,1,1,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0])
+#pre_assigned_outcomes_1000_to_1037 = np.array([0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,1,1,0,1,0,1,1,0,0,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0])
+"""
+pre_assigned_outcomes_1000_to_1027 = np.array([0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0])
+pre_assigned_outcomes_1029_to_1037 = np.array([0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0])
+pre_assigned_outcomes_1039_to_1065 = np.array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+pre_assigned_outcomes_1067_to_1077 = np.array([0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1])
+pre_assigned_outcomes_1078_to_1100 = np.array([0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0])
+pre_assigned_outcomes_1101_to_1146 = np.array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0])
+pre_assigned_outcomes_1147_to_1194 = np.array([1,1,0,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,1,1,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0])
+"""
+pre_assigned_outcomes_1000_to_1194 = np.array([0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,1,1,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0])
+pre_assigned_outcomes = np.append(pre_assigned_outcomes_1_to_446, pre_assigned_outcomes_1000_to_1194)
 # The CNN model
 model = keras.Sequential([
-    keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(96, 96, 1)),
+    keras.layers.Conv2D(8, (5, 5), activation='relu', input_shape=(96, 96, 1)),
     keras.layers.MaxPooling2D((2, 2)),
-    keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    keras.layers.Conv2D(8, (3, 3), activation='relu'),
     keras.layers.MaxPooling2D((2, 2)),
-    keras.layers.Conv2D(64, (3, 3), activation='relu'),
     keras.layers.Flatten(),
-    keras.layers.Dense(64, activation='sigmoid'),
+    keras.layers.Dense(64, activation='relu'),
     keras.layers.Dense(number_of_possible_outcomes, activation='softmax')
 ])
 
@@ -63,13 +91,15 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 model.fit(images, pre_assigned_outcomes, epochs=num_of_epochs, batch_size=batch_size)
-
+model.save("C:/Users/Czaja/Desktop/MPhys thesis/CNN_model/venv/AI models/test_model_1245.h5")
 
 #Testing the model accuracy on many pictures
-#test_loss, test_accuracy = model.evaluate(test_images, test_labels) #input many pictures with labels to see how accurate it is
+#test_loss, test_accuracy = model.evaluate(images, pre_assigned_outcomes) #input many pictures with labels to see how accurate it is
 
+"""
 #Single prediction
-predictions = model.predict(np.array([image_array])) # You get response in this form: [not flat probability, flat probability)
+prediction_image_path = input_image_directory + 'band_structure_mp-417_segment_1.png'
+predictions = model.predict(np.array([np.array(Image.open(input_image_path))])) # You get response in this form: [not flat probability, flat probability)
 
 print(predictions)
-
+"""
