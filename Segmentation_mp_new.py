@@ -330,7 +330,7 @@ for arr in arr_list:
             
         flatness_scores_rows.append(row_flatness_sum) 
         
-        compound_flatness_score = max(flatness_scores) # Compound flatness score for a given material
+        compound_flatness_score = max(flatness_scores_rows) # Compound flatness score for a given material
         
     compound_flatness_score_all.append(compound_flatness_score)
 
